@@ -1,0 +1,451 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Landing Page @Cmry</title>
+    <script>
+        if ('scrollRestoration' in history) history.scrollRestoration = 'manual';
+        const forceStartAtTop = () => {
+            window.scrollTo(0, 0);
+            if (window.requestAnimationFrame) {
+                window.requestAnimationFrame(() => window.scrollTo(0, 0));
+            }
+        };
+        window.addEventListener('pageshow', forceStartAtTop);
+        window.addEventListener('load', forceStartAtTop);
+    </script>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+    <style>
+       @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;700&display=swap');
+        
+        :root {
+            --warm-white: #FDFCF8;
+            --soft-blue: #739bd0;
+            --vivid-blue: #5082c4;
+            --text-main: #4A4A4A;
+        }
+
+        body {
+            font-family: 'Poppins', sans-serif;
+            background-color: var(--warm-white);
+            color: var(--text-main);
+            margin: 0;
+            padding: 0;
+            overflow-x: hidden;
+            position: relative;
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: flex-start;
+        }
+
+        /* Background Image dengan Opacity rendah */
+        .bg-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-image: url('background.jpg'); 
+            background-size: cover;
+            background-position: center;
+            opacity: 0.55; 
+            z-index: -2;
+        }
+
+        /* Gradien diperjelas dengan campuran oranye yang lebih vibrant */
+        .bottom-gradient {
+            position: fixed;
+            bottom: -100px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 150%;
+            height: 450px;
+            background: radial-gradient(circle, rgba(80, 130, 196, 0.3) 0%, rgba(80, 130, 196, 0.2) 45%, transparent 70%);
+            border-radius: 50%;
+            z-index: -1;
+            filter: blur(60px);
+        }
+
+        .glass-card {
+            background: rgba(255, 255, 255, 0.4);
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.8);
+            box-shadow: 0 20px 50px rgba(0, 0, 0, 0.08);
+            border-radius: 3.5rem;
+            padding: 2.5rem 2rem;
+            width: 100%;
+            opacity: 0;
+            transform: scale(0.8) translateY(50px);
+            animation: popUp 1s cubic-bezier(0.34, 1.56, 0.64, 1) forwards;
+        }
+
+        /* Animasi Staggered untuk elemen di dalam kartu */
+        .stagger {
+            opacity: 0;
+            transform: translateY(20px);
+            animation: fadeInSlide 0.8s cubic-bezier(0.34, 1.56, 0.64, 1) forwards;
+        }
+
+        .link-card {
+            transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            border: 1px solid rgba(255, 255, 255, 0.5);
+            background: rgba(255, 255, 255, 0.4);
+        }
+
+        .link-card:hover {
+            transform: scale(1.03) translateY(-5px);
+            border-color: var(--vivid-blue);
+            background: rgba(255, 255, 255, 0.95);
+            box-shadow: 0 15px 30px rgba(80, 130, 196, 0.2);
+        }
+
+        .profile-img {
+            width: 115px;
+            height: 115px;
+            object-fit: cover;
+            border: 4px solid white;
+            box-shadow: 0 10px 25px rgba(0,0,0,0.1);
+        }
+
+        .gear-image {
+            aspect-ratio: 4 / 3;
+            object-fit: cover;
+            background: rgba(80, 130, 196, 0.1);
+        }
+
+        .gear-card {
+            background: rgba(255, 255, 255, 0.72);
+            border: 1px solid rgba(255, 255, 255, 0.8);
+            transition: transform 0.25s ease, box-shadow 0.25s ease;
+        }
+
+        .gear-card:hover {
+            transform: translateY(-4px);
+            box-shadow: 0 14px 28px rgba(80, 130, 196, 0.16);
+        }
+
+        #gear-grid.reveal-enabled > .gear-card {
+            opacity: 0;
+            transform: translateY(24px) scale(0.96);
+            transition: opacity 0.55s ease, transform 0.55s cubic-bezier(0.2, 0.7, 0.2, 1), box-shadow 0.25s ease;
+        }
+
+        #gear-grid.reveal-enabled > .gear-card.is-visible {
+            opacity: 1;
+            transform: translateY(0) scale(1);
+        }
+
+        #gear-grid.reveal-enabled > .gear-card.is-visible:hover {
+            transform: translateY(-4px) scale(1);
+        }
+
+        @media (prefers-reduced-motion: reduce) {
+            #gear-grid.reveal-enabled > .gear-card {
+                opacity: 1;
+                transform: none;
+                transition: none;
+            }
+        }
+
+        @media (max-width: 639px) {
+            .glass-card {
+                padding: 1.5rem 0.875rem;
+                border-radius: 2rem;
+            }
+
+            .profile-img {
+                width: 96px;
+                height: 96px;
+            }
+
+            #gear-title {
+                font-size: 1.375rem;
+                line-height: 1.3;
+            }
+
+            #gear-grid > article {
+                min-width: 0;
+            }
+        }
+
+        .indonesia-flag {
+            display: inline-block;
+            width: 18px;
+            height: 12px;
+            margin-left: 4px;
+            vertical-align: middle;
+            position: relative;
+            overflow: hidden;
+            box-sizing: border-box;
+            background: #ffffff;
+            border: 1px solid rgba(0, 0, 0, 0.12);
+            border-radius: 2px;
+        }
+
+        .indonesia-flag::before {
+            content: "";
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 50%;
+            background: #e31d2f;
+        }
+
+        .footer-line {
+            display: block;
+            flex: none;
+            width: 24px;
+            height: 1px;
+            background: #5082c4;
+            opacity: 0.45;
+        }
+
+        /* Keyframes Animasi */
+        @keyframes popUp {
+            to {
+                opacity: 1;
+                transform: scale(1) translateY(0);
+            }
+        }
+
+        @keyframes fadeInSlide {
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        /* Penentuan Delay muncul satu per satu */
+        .delay-1 { animation-delay: 0.5s; }
+        .delay-2 { animation-delay: 0.65s; } /* Email */
+        .delay-3 { animation-delay: 0.8s; }  /* TikTok */
+        .delay-4 { animation-delay: 0.95s; } /* Instagram */
+        .delay-5 { animation-delay: 1.2s; }  /* WhatsApp */
+        .delay-6 { animation-delay: 1.5s; } /* Footer */
+
+        .loader {
+            position: fixed;
+            top: 0; left: 0; width: 100%; height: 100%;
+            background: var(--warm-white);
+            display: flex; justify-content: center; align-items: center;
+            z-index: 9999;
+            transition: opacity 0.6s ease;
+        }
+    </style>
+</head>
+<body class="py-6 px-3 sm:py-12 sm:px-6">
+
+    <div class="bg-overlay"></div>
+    <div class="bottom-gradient"></div>
+
+    <div id="loader" class="loader">
+        <div class="w-10 h-10 border-2 border-[#5082c4] border-t-transparent rounded-full animate-spin"></div>
+    </div>
+
+    <!-- Main Card -->
+    <main class="max-w-6xl w-full glass-card">
+        
+        <!-- Header Section -->
+        <header class="text-center mb-10 stagger delay-1">
+            <div class="relative inline-block mb-6">
+                <div class="profile-img rounded-full bg-[#eee] mx-auto overflow-hidden">
+                    <img src="BG.jpg" alt="Ahmad Fadhil Ardiansyah" class="w-full h-full object-cover">
+                </div>
+                <div class="absolute -bottom-1 -right-1 bg-[#5082c4] text-white p-1.5 rounded-full shadow-lg">
+                    <i class="fas fa-check text-[10px]"></i>
+                </div>
+            </div>
+            
+            <h1 class="text-2xl font-bold tracking-tight text-gray-800">Ahmad Fadhil Ardiansyah</h1>
+            <p class="text-[#5082c4] font-semibold mt-1 tracking-widest text-xs">@Cmry</p>
+            <p class="text-gray-400 text-[15px] mt-2 tracking-wide">Based in Indonesia <span class="indonesia-flag" role="img" aria-label="Indonesia"></span></p>
+            
+            <div class="w-10 h-[2px] bg-[#5082c4] mx-auto my-6"></div>
+            
+            <p class="text-gray-500 text-sm leading-relaxed px-4 italic">
+                Laptop Setup Enthusiast & Content Creator<p></p>Open for Collaboration and Inquiries
+            </p>
+        </header>
+
+        <!-- Social Links -->
+        <div class="space-y-4">
+            
+            <!-- Email (New) -->
+            <a href="mailto:ahmad2047project@gmail.com" target="_blank" 
+               class="link-card flex items-center p-4 rounded-3xl group stagger delay-2">
+                <div class="w-12 h-12 bg-blue-500 rounded-2xl flex items-center justify-center text-white mr-4 shadow-lg group-hover:rotate-6 transition-transform">
+                    <i class="fas fa-envelope text-xl"></i>
+                </div>
+                <div class="flex-1 text-left">
+                    <h3 class="font-bold text-sm text-gray-800">Email</h3>
+                    <p class="text-[10px] text-gray-400 tracking-tighter">ahmad2047project@gmail.com</p>
+                </div>
+                <i class="fas fa-arrow-right text-xs text-gray-300 group-hover:text-[#5082c4] transition-colors"></i>
+            </a>
+
+            <!-- TikTok -->
+            <a href="https://www.tiktok.com/@fadhil2047?_r=1&_t=ZS-93hEfEQhAPN" target="_blank" 
+               class="link-card flex items-center p-4 rounded-3xl group stagger delay-3">
+                <div class="w-12 h-12 bg-gray-900 rounded-2xl flex items-center justify-center text-white mr-4 shadow-lg group-hover:rotate-6 transition-transform">
+                    <i class="fab fa-tiktok text-xl"></i>
+                </div>
+                <div class="flex-1 text-left">
+                    <h3 class="font-bold text-sm text-gray-800">TikTok</h3>
+                    <p class="text-[#959595] font-semibold mt-1 tracking-widest text-xs">@Cmry || Laptop Setup 💻</p>
+                    <p class="text-[10px] text-gray-400 tracking-tighter">3,8K Followers</p>
+                </div>
+                <i class="fas fa-arrow-right text-xs text-gray-300 group-hover:text-[#5082c4] transition-colors"></i>
+            </a>
+
+            <!-- Instagram -->
+            <a href="https://www.instagram.com/cmrysetup_/" target="_blank" 
+               class="link-card flex items-center p-4 rounded-3xl group stagger delay-4">
+                <div class="w-12 h-12 bg-gradient-to-tr from-yellow-400 via-pink-500 to-purple-600 rounded-2xl flex items-center justify-center text-white mr-4 shadow-lg group-hover:rotate-6 transition-transform">
+                    <i class="fab fa-instagram text-xl"></i>
+                </div>
+                <div class="flex-1 text-left">
+                    <h3 class="font-bold text-sm text-gray-800">Instagram</h3>
+                    <p class="text-[#959595] font-semibold mt-1 tracking-widest text-xs">@cmrysetup_</p>
+                    <p class="text-[10px] text-gray-400 tracking-tighter">2,1K Followers</p>
+                </div>
+                <i class="fas fa-arrow-right text-xs text-gray-300 group-hover:text-[#5082c4] transition-colors"></i>
+            </a>
+
+            <!-- WhatsApp -->
+            <a href="https://wa.me/+6285172009807" target="_blank" 
+               class="link-card flex items-center p-4 rounded-3xl group stagger delay-5">
+                <div class="w-12 h-12 bg-[#25D366] rounded-2xl flex items-center justify-center text-white mr-4 shadow-lg group-hover:rotate-6 transition-transform">
+                    <i class="fab fa-whatsapp text-xl"></i>
+                </div>
+                <div class="flex-1 text-left">
+                    <h3 class="font-bold text-sm text-gray-800">WhatsApp</h3>
+                    <p class="text-[10px] text-gray-400 tracking-tighter">Business
+                    </p>
+                </div>
+                <i class="fas fa-arrow-right text-xs text-gray-300 group-hover:text-[#5082c4] transition-colors"></i>
+            </a>
+
+        </div>
+
+        <!-- Setup Gear -->
+        <section class="mt-14" aria-labelledby="gear-title">
+            <div class="text-center mb-8">
+                <p class="text-[#5082c4] text-xs font-semibold tracking-[0.3em] uppercase">My desk setup</p>
+                <h2 id="gear-title" class="text-2xl font-bold text-gray-800 mt-2">Peripheral yang Aku Pakai di Mejaku</h2>
+                <p class="text-sm text-gray-700 mt-3 max-w-2xl mx-auto">
+                    Daftar lengkap perangkat, periferal, dan aksesori meja kerja beserta estimasi harga dan tautan produk resmi.
+                    (Catatan: Harga dapat berubah sewaktu-waktu).
+                </p>
+            </div>
+            <div id="gear-grid" class="grid grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-3 sm:gap-5" aria-live="polite"></div>
+        </section>
+
+        <!-- Footer -->
+        <footer class="mt-12 text-center stagger delay-6">
+            <div class="inline-flex items-center space-x-3 text-[9px] text-gray-500 tracking-[0.4em]">
+                <span class="footer-line"></span>
+                <span>Cmry Project • 2026</span>
+                <span class="footer-line"></span>
+            </div>
+        </footer>
+
+    </main>
+
+    <script>
+        const setupItems = [
+            { name: "HP Victus 15 FA1094TX (2024)", category: "Laptop", price: 11500000, image: "https://els.id/wp-content/uploads/2023/09/HP-Victus-15-Mica-Silver-3.png" },
+            { name: "Monitor Lenovo LOQ 24-10", category: "Monitor", price: 1719900, image: "https://p16-oec-sg.ibyteimg.com/tos-alisg-i-aphluv4xwc-sg/28ed03f9727149c0a9b01ae527d2394e~tplv-aphluv4xwc-resize-webp:800:800.webp?dr=15582&t=555f072d&ps=933b5bde&shp=c940a200&shcp=9b759fb9&idc=my&from=3376456192", buyLink: "https://vt.tokopedia.com/t/ZS9PPav5FT551-UNFFo/" },
+            { name: "Laptop Stand Dreamland", category: "Aksesori", price: 169000, image: "https://p16-oec-sg.ibyteimg.com/tos-alisg-i-aphluv4xwc-sg/f7d9f8d229f04d579e96e7b2e09531c6~tplv-aphluv4xwc-resize-webp:800:800.webp?dr=15582&t=555f072d&ps=933b5bde&shp=c940a200&shcp=9b759fb9&idc=my&from=3376456192", buyLink: "https://vt.tokopedia.com/t/ZS9PPanaAwFaR-EoJwv/" },
+            { name: "Mic Maono PD100W", category: "Audio", price: 1090000, image: "https://p16-oec-sg.ibyteimg.com/tos-alisg-i-aphluv4xwc-sg/f28d392aa93143628c5c1c27c79832f6~tplv-aphluv4xwc-resize-webp:800:800.webp?dr=15582&t=555f072d&ps=933b5bde&shp=c940a200&shcp=9b759fb9&idc=my&from=3376456192", buyLink: "https://vt.tokopedia.com/t/ZS9PPaTraBfsU-3qh40/" },
+            { name: "Mic Arm Taffstudio", category: "Aksesori audio", price: 93873, image: "https://p16-oec-sg.ibyteimg.com/tos-alisg-i-aphluv4xwc-sg/19a57b9c5b7d46899eac1dbcbce2ec5d~tplv-aphluv4xwc-resize-webp:800:800.webp?dr=15582&t=555f072d&ps=933b5bde&shp=c940a200&shcp=9b759fb9&idc=my&from=3376456192", buyLink: "https://vt.tokopedia.com/t/ZS9PPaEN7xK25-fBuoV/" },
+            { name: "Keyboard Noir N1/X", category: "Periferal", price: 1139000, image: "https://p16-oec-sg.ibyteimg.com/tos-alisg-i-aphluv4xwc-sg/be46f8a4fa2b4030b74ee2f994f64f56~tplv-aphluv4xwc-resize-webp:800:800.webp?dr=15582&t=555f072d&ps=933b5bde&shp=c940a200&shcp=9b759fb9&idc=my&from=3376456192", buyLink: "https://vt.tokopedia.com/t/ZS9PPmJgQCMme-75gnp/" },
+            { name: "Wristpad Sades Sobi XC2", category: "Periferal", price: 158000, image: "https://p16-oec-sg.ibyteimg.com/tos-alisg-i-aphluv4xwc-sg/01aa3ca774e342b7926f7944e1b861d6~tplv-aphluv4xwc-resize-webp:800:800.webp?dr=15582&t=555f072d&ps=933b5bde&shp=c940a200&shcp=9b759fb9&idc=my&from=3376456192", buyLink: "https://vt.tokopedia.com/t/ZS9PPuYh6Q9Su-GZU5i/" },
+            { name: "Mouse Pressplay Spirit", category: "Periferal", price: 339000, image: "https://p16-oec-sg.ibyteimg.com/tos-alisg-i-aphluv4xwc-sg/92981b495c984cc19b4f44ca336636a7~tplv-aphluv4xwc-resize-webp:800:800.webp?dr=15582&t=555f072d&ps=933b5bde&shp=c940a200&shcp=9b759fb9&idc=my&from=3376456192", buyLink: "https://vt.tokopedia.com/t/ZS9PPmdG2HGJa-olL5s/" },
+            { name: "Deskmat Rexus KVLAR T10", category: "Periferal", price: 75000, image: "https://p16-oec-sg.ibyteimg.com/tos-alisg-i-aphluv4xwc-sg/cf2c89b2601a4dd5826fe09512460577~tplv-aphluv4xwc-resize-webp:800:800.webp?dr=15582&t=555f072d&ps=933b5bde&shp=c940a200&shcp=9b759fb9&idc=my&from=3376456192", buyLink: "https://vt.tokopedia.com/t/ZS9PPmh6tTC5E-r5U88/" },
+            { name: "Controller Fantech WGP13S", category: "Periferal", price: 329000, image: "https://p16-oec-sg.ibyteimg.com/tos-alisg-i-aphluv4xwc-sg/faf873cf16524fa2a0b1e38ce5151356~tplv-aphluv4xwc-resize-webp:800:800.webp?dr=15582&t=555f072d&ps=933b5bde&shp=c940a200&shcp=9b759fb9&idc=my&from=3376456192", buyLink: "https://vt.tokopedia.com/t/ZS9PPmF5AMLaD-nXAJJ/" },
+            { name: "Webcam Emeet C60E", category: "Webcam", price: 764100, image: "https://p16-oec-sg.ibyteimg.com/tos-alisg-i-aphluv4xwc-sg/277fe7ca0a714ddcaaacdd4ff0654a62~tplv-aphluv4xwc-resize-webp:800:800.webp?dr=15582&t=555f072d&ps=933b5bde&shp=c940a200&shcp=9b759fb9&idc=my&from=3376456192", buyLink: "https://vt.tokopedia.com/t/ZS9PPm2mSgBLc-YJ0R8/" },
+            { name: "Speaker Vivan S2", category: "Audio", price: 295000, image: "https://p16-oec-sg.ibyteimg.com/tos-alisg-i-aphluv4xwc-sg/fcd53a471ba448d49f4df42d5b75b2a3~tplv-aphluv4xwc-resize-webp:800:800.webp?dr=15582&t=555f072d&ps=933b5bde&shp=c940a200&shcp=9b759fb9&idc=my&from=3376456192", buyLink: "https://vt.tokopedia.com/t/ZS9PPud7BrEtK-SOvVq/" },
+            { name: "Deskshelf", category: "Meja & penyimpanan", price: 39600, pricePrefix: "Mulai ", priceNote: "Harga pada link untuk variasi 30 x 20 cm.", image: "https://p16-oec-sg.ibyteimg.com/tos-alisg-i-aphluv4xwc-sg/b2fcf8f135434f29aba2f8a2d88c7055~tplv-aphluv4xwc-resize-webp:800:800.webp?dr=15582&t=555f072d&ps=933b5bde&shp=c940a200&shcp=9b759fb9&idc=my&from=3376456192", buyLink: "https://vt.tokopedia.com/t/ZS9PPmy7AgbWn-tkrRt/" },
+            { name: "Meja Lesehan 100 x 50 cm", category: "Furnitur", price: 199999, image: "https://p16-oec-sg.ibyteimg.com/tos-alisg-i-aphluv4xwc-sg/41c1ce3b24124fc684d4af7603cea1e8~tplv-aphluv4xwc-resize-webp:800:800.webp?dr=15582&t=555f072d&ps=933b5bde&shp=c940a200&shcp=9b759fb9&idc=my&from=3376456192", buyLink: "https://vt.tokopedia.com/t/ZS9PPmafqWbye-s6vcF/" },
+            { name: "Kursi Lesehan GOTO Jumbo", category: "Furnitur", price: 177600, pricePrefix: "Mulai ", priceNote: "Harga pada link untuk ukuran Small; ukuran Jumbo bisa berbeda.", image: "https://p16-oec-va.ibyteimg.com/tos-maliva-i-o3syd03w52-us/c863165fea7e435897ccbb141201f956~tplv-o3syd03w52-resize-webp:800:800.webp?dr=15582&t=555f072d&ps=933b5bde&shp=c940a200&shcp=9b759fb9&idc=my&from=3376456192", buyLink: "https://vt.tokopedia.com/t/ZS9PPm9PALTqJ-B0PUV/" },
+            { name: "Standee Zeta", category: "Dekorasi", price: 14580, image: "https://p16-oec-va.ibyteimg.com/tos-maliva-i-o3syd03w52-us/9fe02129028b456984b48f4f68b7146c~tplv-o3syd03w52-resize-webp:800:800.webp?dr=15582&t=555f072d&ps=933b5bde&shp=c940a200&shcp=9b759fb9&idc=my&from=3376456192", buyLink: "https://vt.tokopedia.com/t/ZS9PPmCrdvRTP-2PsM7/" },
+            { name: "Wallpanel PVC", category: "Dekorasi", price: 24900, priceNote: "Tipe yang aku pakai: A13-167", image: "https://p16-oec-va.ibyteimg.com/tos-maliva-i-o3syd03w52-us/cf0c92b0ac784c95b2a075a4431af14a~tplv-o3syd03w52-resize-webp:800:800.webp?dr=15582&t=555f072d&ps=933b5bde&shp=c940a200&shcp=9b759fb9&idc=my&from=3376456192", buyLink: "https://vt.tokopedia.com/t/ZS9PPmcj5R8v8-fip5C/" },
+            { name: "USB Hub PX UCA50S", category: "Aksesori", price: 131000, image: "https://p16-oec-sg.ibyteimg.com/tos-alisg-i-aphluv4xwc-sg/b9fdf70cd7be47b5a1c8adbeb1bc7793~tplv-aphluv4xwc-resize-webp:800:800.webp?dr=15582&t=555f072d&ps=933b5bde&shp=c940a200&shcp=9b759fb9&idc=my&from=3376456192", buyLink: "https://vt.tokopedia.com/t/ZS9PPms7t9QgQ-p2zcp/" },
+            { name: "Amino USB Hub", category: "Aksesori", price: 39800, image: "https://p16-oec-sg.ibyteimg.com/tos-alisg-i-aphluv4xwc-sg/5178d3791f0a4a93a24d961af84eefe4~tplv-aphluv4xwc-resize-webp:800:800.webp?dr=15582&t=555f072d&ps=933b5bde&shp=c940a200&shcp=9b759fb9&idc=my&from=3376456192", buyLink: "https://vt.tokopedia.com/t/ZS9PPmGDRbAeD-wNRvj/" },
+            { name: "Lighting TNW", category: "Pencahayaan", price: 129800, image: "https://p16-oec-sg.ibyteimg.com/tos-alisg-i-aphluv4xwc-sg/4718cb46f2704794951a5d9b8dd58bda~tplv-aphluv4xwc-resize-webp:800:800.webp?dr=15582&t=555f072d&ps=933b5bde&shp=c940a200&shcp=9b759fb9&idc=my&from=3376456192", buyLink: "https://vt.tokopedia.com/t/ZS9PPmKMwY1Aw-Bct3P/" },
+            { name: "LED Backlight", category: "Pencahayaan", price: 39800, image: "https://p16-oec-sg.ibyteimg.com/tos-alisg-i-aphluv4xwc-sg/c19f6d9ca0604422b7bd875f1298f1ce~tplv-aphluv4xwc-resize-webp:800:800.webp?dr=15582&t=555f072d&ps=933b5bde&shp=c940a200&shcp=9b759fb9&idc=my&from=3376456192", buyLink: "https://vt.tokopedia.com/t/ZS9PPuVJwBMQV-F407u/" }
+        ];
+
+        const gearGrid = document.getElementById('gear-grid');
+        gearGrid.innerHTML = setupItems.map((item) => `
+            <article class="gear-card rounded-3xl overflow-hidden">
+                <img src="${item.image}" alt="${item.name}" class="gear-image w-full" loading="lazy">
+                <div class="p-3 sm:p-4">
+                    <p class="text-[10px] uppercase tracking-[0.2em] text-[#5082c4] font-semibold">${item.category}</p>
+                    <h3 class="font-bold text-sm text-gray-800 mt-1">${item.name}</h3>
+                    <p class="text-sm font-semibold text-gray-700 mt-2">${item.pricePrefix || ''}Rp ${item.price.toLocaleString('id-ID')}</p>
+                    ${item.priceNote ? `<p class="text-[10px] text-gray-500 mt-1">${item.priceNote}</p>` : ''}
+                    ${item.buyLink ? `
+                        <a href="${item.buyLink}" target="_blank" rel="noopener noreferrer"
+                           class="mt-3 sm:mt-4 flex w-full min-w-0 items-center justify-center gap-1.5 rounded-2xl bg-[#5082c4] px-2 py-2.5 text-center text-xs font-semibold leading-tight text-white whitespace-normal transition-colors sm:py-3">
+                            <i class="fas fa-bag-shopping shrink-0" aria-hidden="true"></i>
+                            <span class="min-w-0">Lihat link pembelian</span>
+                        </a>
+                    ` : '<p class="mt-4 text-center text-xs text-gray-400">Link pembelian belum tersedia</p>'}
+                </div>
+            </article>
+        `).join('');
+
+        const prefersReducedMotion = window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+        if ('IntersectionObserver' in window && !prefersReducedMotion) {
+            gearGrid.classList.add('reveal-enabled');
+            const productCards = Array.from(gearGrid.querySelectorAll('.gear-card'));
+            const revealQueue = [];
+            let revealTimeout = null;
+
+            const revealNextCard = () => {
+                revealTimeout = null;
+                const card = revealQueue.shift();
+                if (!card) return;
+
+                card.classList.add('is-visible');
+                if (revealQueue.length) {
+                    revealTimeout = window.setTimeout(revealNextCard, 110);
+                }
+            };
+
+            const productObserver = new IntersectionObserver((entries, observer) => {
+                entries
+                    .filter((entry) => entry.isIntersecting)
+                    .sort((a, b) => productCards.indexOf(a.target) - productCards.indexOf(b.target))
+                    .forEach((entry) => {
+                        observer.unobserve(entry.target);
+                        revealQueue.push(entry.target);
+                    });
+
+                revealQueue.sort((a, b) => productCards.indexOf(a) - productCards.indexOf(b));
+                if (revealTimeout === null) revealNextCard();
+            }, { threshold: 0.12, rootMargin: '0px 0px -24px 0px' });
+
+            productCards.forEach((card) => {
+                productObserver.observe(card);
+            });
+        }
+
+        window.onload = function() {
+            setTimeout(() => {
+                const loader = document.getElementById('loader');
+                loader.style.opacity = '0';
+                setTimeout(() => {
+                    loader.style.display = 'none';
+                }, 500);
+            }, 600);
+        };
+    </script>
+</body>
+</html>
